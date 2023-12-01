@@ -5,32 +5,32 @@ import * as child_process from "child_process";
 
 export function activate(context: vscode.ExtensionContext) {
   let openInMainDisposable = vscode.commands.registerCommand(
-    "githubextension.openInGitHubMain",
+    "gitextension.openInGitHubMain",
     () => {
       openFile(true);
     }
   );
   let openInCurrentDisposable = vscode.commands.registerCommand(
-    "githubextension.openInGitHubCurrent",
+    "gitextension.openInGitHubCurrent",
     () => {
       openFile(false);
     }
   );
 
   let viewDiffMainDisplosable = vscode.commands.registerCommand(
-    "githubextension.viewDiffMain",
+    "gitextension.viewDiffMain",
     () => {
       executeDiffViewer("main");
     }
   );
   let viewDiffCurrentDisposable = vscode.commands.registerCommand(
-    "githubextension.viewDiffPrevious",
+    "gitextension.viewDiffPrevious",
     () => {
       executeDiffViewer("currentBranchPreviousCommit");
     }
   );
   let viewDiffPreviousDisposable = vscode.commands.registerCommand(
-    "githubextension.viewDiffCurrent",
+    "gitextension.viewDiffCurrent",
     () => {
       executeDiffViewer("currentBranch");
     }

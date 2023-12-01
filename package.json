@@ -1,43 +1,44 @@
 {
-  "name": "githubextension",
+  "name": "gitextension",
   "displayName": "GitHubExtension",
   "description": "",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.84.0"
   },
   "categories": [
     "Other"
   ],
+
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "githubextension.openInGitHubMain",
+        "command": "gitextension.openInGitHubMain",
         "title": "Open In Main"
       },
 
       {
-        "command": "githubextension.openInGitHubCurrent",
+        "command": "gitextension.openInGitHubCurrent",
         "title": "Open In Current"
       },
 
       {
-        "command": "githubextension.viewDiffMain",
+        "command": "gitextension.viewDiffMain",
         "title": "View diff main"
       },
       {
-        "command": "githubextension.viewDiffPrevious",
+        "command": "gitextension.viewDiffPrevious",
         "title": "View diff previous commit on current branch"
       },
       {
-        "command": "githubextension.viewDiffCurrent",
+        "command": "gitextension.viewDiffCurrent",
         "title": "View diff current branch"
       },
 
       {
-        "command": "githubextension.viewDiffMain",
+        "command": "gitextension.viewDiffMain",
         "title": "View diff main"
       }
     ]
