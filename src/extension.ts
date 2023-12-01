@@ -17,9 +17,75 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  context.subscriptions.push(openInMainDisposable, openInCurrentDisposable);
-}
+  let viewDiffMainDisplosable = vscode.commands.registerCommand(
+    "githubextension.viewDiffMain",
+    () => {
+      executeDiffViewer("main");
+    }
+  );
+  let viewDiffCurrentDisposable = vscode.commands.registerCommand(
+    "githubextension.viewDiffPrevious",
+    () => {
+      executeDiffViewer("currentBranchPreviousCommit");
+    }
+  );
+  let viewDiffPreviousDisposable = vscode.commands.registerCommand(
+    "githubextension.viewDiffCurrent",
+    () => {
+      executeDiffViewer("currentBranch");
+    }
+  );
 
+  context.subscriptions.push(
+    openInMainDisposable,
+    openInCurrentDisposable,
+    viewDiffCurrentDisposable,
+    viewDiffMainDisplosable,
+    viewDiffPreviousDisposable
+  );
+}
+// ==================================================================
+// ========================Diff Viewer============================
+
+const executeDiffViewer = (comparison: String) => {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    vscode.window.showErrorMessage("No active text editor.");
+    return;
+  }
+  const terminal = vscode.window.createTerminal({
+    name: "Diff Viewer",
+  });
+  const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+  if (!workspaceFolder) {
+    vscode.window.showErrorMessage("No workspace folder found.");
+    return;
+  }
+
+  const workspacePath = workspaceFolder.uri.fsPath;
+  const relativeFilePath = path.relative(
+    workspacePath,
+    editor.document.uri.fsPath
+  );
+  let diffCommand;
+
+  if (comparison == "currentBranchPreviousCommit") {
+    diffCommand = `git difftool -y HEAD^ -- ${relativeFilePath} && exit`;
+  } else if (comparison == "currentBranch") {
+    diffCommand = `git difftool -y $(git symbolic-ref --short HEAD) -- ${relativeFilePath} && exit`;
+    // main
+  } else {
+    diffCommand = `git difftool -y main -- ${relativeFilePath} && exit`;
+  }
+  terminal.sendText(diffCommand, true);
+  terminal.show();
+};
+
+// ========================Diff Viewer============================
+// ==================================================================
+
+// ==================================================================
+// ========================Open In Github============================
 function openFile(openOnMain: boolean) {
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
@@ -124,5 +190,7 @@ function getCurrentBranch(workspacePath: string, runOnMain: boolean): string {
     return "";
   }
 }
+// ========================Open In Github============================
+// ==================================================================
 
 export function deactivate() {}

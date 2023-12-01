@@ -21,6 +21,24 @@
       {
         "command": "githubextension.openInGitHubCurrent",
         "title": "Open In Current"
+      },
+
+      {
+        "command": "githubextension.viewDiffMain",
+        "title": "View diff main"
+      },
+      {
+        "command": "githubextension.viewDiffPrevious",
+        "title": "View diff previous commit on current branch"
+      },
+      {
+        "command": "githubextension.viewDiffCurrent",
+        "title": "View diff current branch"
+      },
+
+      {
+        "command": "githubextension.viewDiffMain",
+        "title": "View diff main"
       }
     ]
   },
