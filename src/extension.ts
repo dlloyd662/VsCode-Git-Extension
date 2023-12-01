@@ -27,27 +27,29 @@ function openFile(openOnMain: boolean) {
     return;
   }
 
-  // Check if there is a selection
-  if (editor.selection.isEmpty) {
-    vscode.window.showErrorMessage("No text selected.");
-    return;
-  }
-
   // Initialize variables to store the highest and lowest line numbers
   let highestLineNumber = -1; // Initialize with a lower value
   let lowestLineNumber = Number.MAX_SAFE_INTEGER; // Initialize with a higher value
 
-  // Iterate through the selected lines and update the highest and lowest line numbers
-  for (
-    let line = editor.selection.start.line;
-    line <= editor.selection.end.line;
-    line++
-  ) {
-    const lineNumber = line + 1; // Line numbers are 1-based
+  // Check if there is a selection
+  if (editor.selection.isEmpty) {
+    const cursorLineNumber = editor.selection.active.line + 1; // 1-based line number
+    highestLineNumber = cursorLineNumber;
+    lowestLineNumber = cursorLineNumber;
+    // return;
+  } else {
+    // Iterate through the selected lines and update the highest and lowest line numbers
+    for (
+      let line = editor.selection.start.line;
+      line <= editor.selection.end.line;
+      line++
+    ) {
+      const lineNumber = line + 1; // Line numbers are 1-based
 
-    // Update the highest and lowest line numbers
-    highestLineNumber = Math.max(highestLineNumber, lineNumber);
-    lowestLineNumber = Math.min(lowestLineNumber, lineNumber);
+      // Update the highest and lowest line numbers
+      highestLineNumber = Math.max(highestLineNumber, lineNumber);
+      lowestLineNumber = Math.min(lowestLineNumber, lineNumber);
+    }
   }
 
   // Get the Git repository root directory (assuming it's the workspace root)
@@ -84,9 +86,12 @@ function openFile(openOnMain: boolean) {
   // Construct the Git URL with line number
   let gitUrl;
   if (openOnMain) {
-    gitUrl = `${cleanGitOrigin}/blob/main/${relativeFilePath}#L${lowestLineNumber}-#L${highestLineNumber}`;
+    gitUrl = `${cleanGitOrigin}/blob/main/${relativeFilePath}#L${lowestLineNumber}`;
   } else {
-    gitUrl = `${cleanGitOrigin}/blob/${currentBranch}/${relativeFilePath}#L${lowestLineNumber}-#L${highestLineNumber}`;
+    gitUrl = `${cleanGitOrigin}/blob/${currentBranch}/${relativeFilePath}#L${lowestLineNumber}`;
+  }
+  if (highestLineNumber > lowestLineNumber) {
+    gitUrl = gitUrl + `-#L${highestLineNumber}`;
   }
   // Open the Git URL in the default web browser
   vscode.env.openExternal(vscode.Uri.parse(gitUrl));

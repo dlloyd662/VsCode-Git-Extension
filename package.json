@@ -14,12 +14,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "githubextension.openInGitHubMain",
+        "command": "githubextension.githubextensionMain",
         "title": "Open In Main"
       },
 
       {
-        "command": "githubextension.openInGitHubCurrent",
+        "command": "githubextension.githubextensionCurrent",
         "title": "Open In Current"
       }
     ]
